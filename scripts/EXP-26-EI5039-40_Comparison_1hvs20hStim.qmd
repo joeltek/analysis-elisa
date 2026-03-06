@@ -1,0 +1,511 @@
+---
+title: "Cytokine Loops Part 2-3: 1h vs 20h comparison"
+author: "JT"
+date: "2026-03-06"
+format: 
+  pdf: 
+    mainfont: "arial"
+    monofont: "monaco"
+    monofontoptions: 
+    - Scale=0.82 # value for 80 character width with monaco font on A4
+    code-block-bg: e5e6e4
+---
+
+------------------------------------------------------------------------
+
+# Combining analyses from EXP-26-EI5039 and EXP-26EI5040
+
+------------------------------------------------------------------------
+
+{{< pagebreak >}}
+
+## Experiment setup
+
+The two experiments had identical setups, only differing in stimulation time: short and long term incubation.
+
+Blood samples were prepared as following:
+
+75 µL Blood + 75 µL WB-Stim –\> 150 µL cultures + 20 µL pre-treatments+stim added
+
+| Setting | Parameter | EXP-26-EI5039 | EXP-26-EI5040 |
+|-----------------|-----------------|-------------------|-------------------|
+| Readout | IFNa ELISA | 2 Plates | 2 Plates |
+|  | TNF ELISA | 2 Plates | 2 Plates |
+| Processing | Hamilton Method | M6 Plasma Harvest v0.3 | M6 Plasma Harvest v0.3 |
+| Material | Plasma | 70 µL Plasma first round, 50 µL in second round. | 70 µL Plasma first round, 50 µL in second round. |
+| Stimulation | Ctrl | 0 | 0 |
+|  | R848 | 500 ng/mL | 500 ng/mL |
+|  | LPS | 1 ng/mL | 1 ng/mL |
+| Pre-treatment | IFNa | 0, 10 ng/mL | 0, 10 ng/mL |
+|  | IFNβ | 0, 10 ng/mL | 0, 10 ng/mL |
+|  | IFNγ | 0, 10 ng/mL | 0, 10 ng/mL |
+|  | TNF | 0, 10 ng/mL | 0, 10 ng/mL |
+|  | IL-1β | 0, 10 ng/mL | 0, 10 ng/mL |
+|  | IL-6 | 0, 10 ng/mL | 0, 10 ng/mL |
+|  | IL-23 | 0, 10 ng/mL | 0, 10 ng/mL |
+| Timepoints | Pre-treatment | 1h | 1h |
+|  | Stimulation | 20h | 1h |
+
+: Experimental setup of EXP-26-EI5039 and EXP-26-EI5040 in comparison.
+
+{{< pagebreak >}}
+
+## Set up code environment
+
+### Load libraries
+
+```{r install packages}
+# Install packages if not already installed / link from renv cache
+required_packages <- c("tidyverse", "conflicted", "drc", "RColorBrewer", 
+                       "ggridges", "scales", "colorspace", "Cairo", "patchwork")
+for (pkg in required_packages) {
+  if (!require(pkg, character.only = TRUE)) {
+    renv::install(pkg, dependencies = TRUE)
+  }
+}
+```
+
+
+```{r load packages}
+# Imports for curve fitting and data manipulation
+library(tidyverse) # for data manipulation and plotting, must-have
+library(conflicted) # for managing function conflicts
+library(drc) # for standard curve fitting
+library(RColorBrewer) # for color palettes
+# library(ggridges) # for ridge plots of OD distributions
+library(scales) # for scaling functions in plots
+# library(colorspace) # for colour manipulation
+library(Cairo) # for high-quality PDF output
+library(patchwork) # for combining multiple ggplots into one figure
+conflicts_prefer(dplyr::filter)
+conflict_prefer("select", "dplyr")
+```
+
+### Information for reproducibility
+```{r reproducibility}
+# Output folder
+experiment_id = "EXP-26-EI5039-40"
+output_folder = paste0("results/", experiment_id, "/")
+
+set.seed(23164) # for reproducing jitter in plots
+
+# Export session info into a txt file
+## Source - https://stackoverflow.com/a/21967272
+## Posted by Roland
+## Retrieved 2026-03-06, License - CC BY-SA 3.0
+writeLines(capture.output(sessionInfo()), 
+           paste0(output_folder, experiment_id, "-sessionInfo.txt"))
+```
+
+{{< pagebreak >}}
+
+
+## Define global variables and functions
+
+### Varibales
+```{r define variables}
+# Experiment-related variables
+# Identical to earlier run, with same experiment ID and variables. Previous 
+# experiment was saved separately.
+plate_ids = c("P1", "P2")
+cytokines = c("IFNa", "TNF")
+# Each plate is a replicate of the same sample set and cytokine.
+
+```
+
+### Functions
+```{r functions}
+# File paths return function - based on experiment id
+get_data_file_path <- function(experiment_id, cytokine, plate_id) {
+  paste0(data_file_folder, experiment_id, "_", cytokine, "-", plate_id, ".csv")
+}
+# Robust csv reader and data importer for general use
+read_data_file2 <- function(file_path) {
+  data <- read.csv(file_path, header = TRUE, sep = ",", dec = ".", 
+                   stringsAsFactors = FALSE)
+  return(data)
+}
+# Data imports
+## Data processing and formatting
+### Column name adjustment
+plate_reader_colname_adjustment <- function(data) {
+  # The colnames are always in the format: "Well", "Content", 
+  # "Well.Scan..Average..450.1", 
+  # "Well.Scan..Average..570.2"/"Well.Scan..Average..620.2")
+  # Since we have different reference wavelengths (570 or 620), we rename the 
+  # columns to primary and reference OD
+  colnames(data) <- gsub("Well.Scan..Average..450.1.", 
+                         "OD_primary", 
+                         colnames(data))
+  if ("Well.Scan..Average..570.2." %in% colnames(data)) {
+    colnames(data) <- gsub("Well.Scan..Average..570.2.", 
+                           "OD_ref", 
+                           colnames(data))
+  } else if ("Well.Scan..Average..620.2." %in% colnames(data)) {
+    colnames(data) <- gsub("Well.Scan..Average..620.2.", 
+                           "OD_ref", 
+                           colnames(data))
+  }
+  selected_cols <- c("Well", "Content", "OD_primary", "OD_ref")
+  data <- data[, selected_cols]
+  return(data)
+}
+
+### OD correction: OD = OD450 - OD570 (alt. OD = OD450 - OD620)
+OD_correction <- function(data) {
+  data <- data %>%
+    mutate(OD_cor = OD_primary - OD_ref)
+  return(data)
+}
+### OD correction: OD = OD450 - OD570 (alt. OD = OD450 - OD620)
+# OD_correction <- function(data) {
+#   if ("OD570" %in% colnames(data)) {
+#     data <- data %>%
+#       mutate(OD_cor = OD450 - OD570)
+#   } else if ("OD620" %in% colnames(data)) {
+#     data <- data %>%
+#       mutate(OD_cor = OD450 - OD620)
+#   }
+#   return(data)
+# }
+
+## Mapping file import
+### Not needed, using read_data_file function
+
+## Merging into main data frame
+### Not needed, using merge function in main pipeline
+
+# Blank correction and sensitivity calculation
+## Mean blank calculation
+calculate_mean_blank <- function(
+    data # data frame with OD values and Content column indicating blanks
+    ) {
+  # Select blank wells called "Blank B" or "Blank" in Content
+  blanks_data = data %>%
+    filter(Content == "Blank B" | Content == "Blank")
+  mean_blank_od <- blanks_data %>%
+    # Calculate mean and sd of blanks
+    summarise(mean_blank_OD = mean(OD_cor, na.rm = TRUE)) %>%
+    pull(mean_blank_OD)
+  sd_blank_od <- blanks_data %>%
+    summarise(sd_blank_OD = sd(OD_cor, na.rm = TRUE)) %>%
+    pull(sd_blank_OD)
+  blank_stats <- data.frame("mean_blank_OD" = mean_blank_od,
+                            "sd_blank_OD" = sd_blank_od) 
+  return(blank_stats)
+}
+## Blank subtraction
+perform_blank_correction <- function(
+    data, blank_stats
+    ) {
+  data <- data %>%
+    mutate(OD_blank_cor = OD_cor - blank_stats$mean_blank_OD) %>%
+    # Round to 3 decimal places
+    mutate(OD_blank_cor = round(OD_blank_cor, 3)) %>%
+    # Set negative values to zero
+    mutate(OD_blank_cor = ifelse(OD_blank_cor < 0, 0, OD_blank_cor))
+  return(data)
+}
+## Sensitivity calculation: ULOQ, LLOQ, LLOD
+calculate_sensitivity <- function(
+    standards_data, blanks_data_frame, cytokine, plate_id
+    ) {
+  # Retrieve mean and SD of blank
+  mean_blank_od <- blanks_data_frame %>%
+    filter(ExperimentID == experiment_id,
+           Cytokine == cytokine,
+           PlateID == plate_id) %>%
+    pull(mean_blank_OD)
+  sd_blank_od <- blanks_data_frame %>%
+    filter(ExperimentID == experiment_id,
+           Cytokine == cytokine,
+           PlateID == plate_id) %>%
+    pull(sd_blank_OD)
+  # LLOD = mean blank + 3*SD blank
+  LLOD_od <- mean_blank_od + 3 * sd_blank_od
+  # LLOQ = mean blank + 10*SD blank
+  LLOQ_od <- mean_blank_od + 10 * sd_blank_od
+  # ULOQ = Highest standard OD
+  ULOQ_od <- max(standards_data$OD_blank_cor, na.rm = TRUE)
+  sensitivity_df <- data.frame("Cytokine" = cytokine,
+                               "PlateID" = plate_id,
+                               "LLOD_OD" = LLOD_od,
+                               "LLOQ_OD" = LLOQ_od,
+                               "ULOQ_OD" = ULOQ_od)
+  return(sensitivity_df)
+}
+
+# Standard curve fitting
+## Curve fitting - 4PLM, Response = OD, Predictor = Concentration
+## Using drm function from drc package by Christian Ritz and Jens C. Streibig
+fit_standard_curve <- function(
+    standards_data # df with OD_blank_cor and Concentration_pg_mL columns
+    ) {
+  model <- drm(OD_blank_cor ~ Concentration_pg_mL, 
+               data = standards_data, 
+               fct = LL.4(names=c("Slope", "Lower", "Upper", "ED50")))
+  return(
+    model # model object used for predictions and plotting
+    )
+}
+
+## Concentration calculation
+calculate_concentration <- function(
+    model, od_values # calculate OD based on model
+    ) {
+  concentrations <- ED(model, type = "absolute", od_values, display = F)
+  return(
+    concentrations # 
+    )
+}
+
+```
+
+## Import data
+
+### Read in data from two experiments
+
+```{r}
+# Define experiment IDs for both experiments
+experiment_id_20h <- "EXP-26-EI5039"
+experiment_id_1h <- "EXP-26-EI5040"
+```
+
+Looping over experiment IDs for importing finalised data sets for each experiment, stored as csv files. We have one data set per experiment, with the final results data.
+
+```{r}
+# Loop over experiment IDs
+experiment_ids <- c(experiment_id_1h, experiment_id_20h)
+# Empty data frame to store combined data
+combined_data <- data.frame()
+for (import_experiment_id in experiment_ids) {
+  input_folder = paste0("results/", import_experiment_id, "/")
+  file_path <- paste0(input_folder, import_experiment_id, "Output.csv")
+  # Read data file
+  experiment_data <- read_data_file2(file_path)
+  # Add experiment ID column to data frame
+  # experiment_data$ExperimentID <- experiment_id # Not needed, already in df
+  if ("Method" %in% colnames(experiment_data)) {
+    experiment_data <- experiment_data %>%
+      select(-Method) # Remove Method column as it is not in EXP-26-EI5040
+  }
+  # Append to combined data frame
+  combined_data <- rbind(combined_data, experiment_data)
+}
+
+```
+
+## Plotting
+
+### Sample Concentration Plot
+
+Looking at all samples, and how the OD values fell within range. Above, we labelled each sample with regard to its OD as "Below LLOD", "Between LLOD and LLOQ", "Within Range", or "Above ULOQ". We can use this information to color the points in the plot accordingly.
+
+```{r data frame for plotting}
+# Adjust the samples data frame for plotting
+samples_data_plot <- combined_data %>%
+  select(Well, PlateID, Cytokine, Donor_ID, Sample, PreTreatment, Stim, 
+         Stim_Conc, Timepoint, Final_Concentration_pg_mL, Within_Range)
+
+# Sort sample names in alphabetical order
+samples_data_plot$Sample <- factor(
+  samples_data_plot$Sample, levels = sort(unique(samples_data_plot$Sample))
+  )
+
+# Set NA values as 0
+samples_data_plot <- samples_data_plot %>%
+  mutate(
+    Final_Concentration_pg_mL = ifelse(is.na(Final_Concentration_pg_mL), 
+                                       0, 
+                                       Final_Concentration_pg_mL),
+    Sample = as.factor(Sample)
+    )
+
+# Make a character vector of sample IDs in the order they appear in the data frame
+samples_data_plot$Sample <- as.character(samples_data_plot$Sample)
+
+# Then we can use this vector to set the levels of the Sample factor
+samples_data_plot$Sample <- factor(samples_data_plot$Sample, 
+                                   levels = unique(samples_data_plot$Sample))
+
+```
+
+```{r sample concentration plot}
+# Colours for within range, above ULOQ, below LLOD
+range_palette <- c("Below LLOD" = "yellow3", 
+                   "Between LLOD and LLOQ" = "grey80", 
+                   "Within Range" = "black", 
+                   "Above ULOQ" = "red")
+
+# Plot sample concentrations
+sample_conc_overview <- ggplot(samples_data_plot, 
+                               aes(x = Sample, 
+                                   y = Final_Concentration_pg_mL, 
+                                   color = Within_Range, 
+                                   shape = Donor_ID)) +
+  geom_point(size = 3) +
+  labs(title = paste0("Plasma concentration of cytokines, 
+                      all samples and all ELISAs together"),
+       x = "Sample ID",
+       y = "Concentration (pg/mL)") +
+  theme_minimal() +
+  scale_color_manual(values = range_palette) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ Cytokine, ncol = 2, scales = "free_y", axes = "all")
+
+print(sample_conc_overview, width = 12, height = 6)
+
+ggsave(sample_conc_overview, 
+       filename = paste0(output_folder, 
+                         experiment_id, 
+                         "_Sample_conc_overview.pdf"), 
+       width = 8, 
+       height = 6)
+```
+
+### Box Plots
+
+Box plots with stim concentration on x axis, untreated / TNF-treated side-by-side, and final concentration on y axis.
+
+```{r prepare data for boxplots}
+
+# Remove IFNa+TNF samples, as we cannot interpret them for IFNa or TNF ELISA
+samples_data_plot <- samples_data_plot %>%
+  filter(PreTreatment != "IFNa+TNF")
+
+# Reorder PreTreatment factor levels
+samples_data_plot <- samples_data_plot %>%
+  mutate(PreTreatment = factor(PreTreatment, 
+                               levels = c("Untreated", "IFNa", "IFNb", "IFNg", 
+                                          "TNF", "IL-1b", "IL-6", "IL-23")))
+
+# Reorder Stim factor levels
+samples_data_plot <- samples_data_plot %>%
+  mutate(Stim = factor(Stim, levels = c("Unstim", "LPS", "R848")))
+
+# Reorder Stim concentration factor levels
+samples_data_plot <- samples_data_plot %>%
+  mutate(Stim_Conc = factor(Stim_Conc, levels = c("0", "1", "500")))
+
+# Define a colour palette for cytokines
+cytokine_palette <- c("Untreated" = "#666666", 
+                      "IFNa" = "#d95f02", 
+                      "IFNb" = "#66a61e", 
+                      "IFNg" = "#e7298a", 
+                      "TNF" = "#7570b3", 
+                      "IL-1b" = "#e6ab02", 
+                      "IL-6" = "#a6761d", 
+                      "IL-23" = "#1b9e77")
+
+# Define an alpha palette for stim concentrations
+alpha_palette <- c("0" = 0.5, "1" = 1, "500" = 1)
+
+# Setting stim conc as categorical variable for plotting purposes
+samples_data_plot <- samples_data_plot %>%
+  mutate(Stim_Conc = factor(Stim_Conc, levels = c("0", "1", "500")))
+```
+
+### Plotting an overview
+
+The objective is to compare the methods (Hamilton, Hamilton 1 and Manual), and see how the sample concentrations differ between them, and how they correlate with each other. We can make a scatter plot with the concentrations from one method on the x axis, and the concentrations from another method on the y axis, and color the points by treatment or stim condition. We can also add a line of identity (y = x) to see how well the methods agree with each other.
+
+```{r overview plot}
+# Reshape the data frame to have one column for each donor's concentrations
+samples_data_overview <- samples_data_plot %>%
+  select(Well, Sample, Cytokine, PreTreatment, Stim, Stim_Conc, 
+         Donor_ID, Timepoint, Final_Concentration_pg_mL) %>%
+  summarise(
+    Final_Concentration_pg_mL = mean(Final_Concentration_pg_mL, na.rm = TRUE), 
+    .by = c(Sample, Cytokine, PreTreatment, Stim, Stim_Conc, Donor_ID, 
+            Timepoint)
+    )
+
+samples_data_overview <- samples_data_overview %>%
+  select(-c(Sample)) %>%
+  pivot_wider(names_from = Donor_ID, values_from = Final_Concentration_pg_mL)
+
+# Scatter plot comparing Hamilton and Manual methods
+overview_plot <- ggplot(samples_data_overview, 
+                        aes(x = `Donor_1`, 
+                            y = `Donor_2`, 
+                            colour = PreTreatment, 
+                            shape = Stim, 
+                            alpha = Stim_Conc)) +
+  geom_point(size = 3) +
+  labs(title = "Comparison of Donor plasma concentrations",
+       x = "Donor 1 Concentration (pg/mL)",
+       y = "Donor 2 Concentration (pg/mL)") +
+  theme_minimal() +
+  scale_color_manual(values = cytokine_palette) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray") +
+  facet_wrap(~ Cytokine + Timepoint, scales = "free") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(overview_plot)
+
+ggsave(overview_plot, 
+       filename = paste0(output_folder, 
+                         experiment_id, 
+                         "_Overview_Donors_AllCytokines.pdf"
+                         ), 
+       width = 8, 
+       height = 6
+       )
+```
+
+### Boxplots comparing pretreatments for each stimulation
+
+```{r palettes}
+# Reshape the data frame to have one column for each method's concentrations
+samples_data_boxplot <- samples_data_plot
+
+# Colours for within range, above ULOQ, below LLOD
+range_palette <- c("Below LLOD" = "yellow3", 
+                   "Between LLOD and LLOQ" = "grey80", 
+                   "Within Range" = "black", 
+                   "Above ULOQ" = "red")
+
+# Shape used to differentiate donors
+shape_palette <- c("Donor_1" = 16, "Donor_2" = 17)
+
+# Alpha palette for timepoints
+timepoint_palette <- c("1h" = 0.5, "20h" = 1)
+```
+
+Boxplots for comparing timepoints, by also having position dodge for timepoints, and faceting by stim and cytokine.
+
+```{r boxplots comparing methods}
+# Position dodge boxplots, facet by stim and cytokine
+boxplot_timepoint <- ggplot(samples_data_boxplot, 
+                            aes(x = PreTreatment, 
+                                y = Final_Concentration_pg_mL, 
+                                fill = PreTreatment)) +
+  geom_boxplot(outlier.shape = NA, 
+               position = position_dodge(width = 0.8), 
+               aes(alpha = Timepoint)) +
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2, 
+                                              dodge.width = 0.8), 
+              size = 1.5, 
+              aes(color = Within_Range, shape = Donor_ID, alpha = Timepoint)
+              ) +
+  labs(title = "Effect of pre-treatments on plasma cytokine concentrations",
+       subtitle = "1h pre-treatment, comparing 1h and 20h stimulations",
+       x = "Pre-treatment",
+       y = "Plasma concentration (pg/mL)") +
+  theme_minimal() +
+  scale_fill_manual(values = cytokine_palette) +
+  scale_color_manual(values = range_palette) +
+  scale_alpha_manual(values = timepoint_palette) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(Cytokine ~ Stim, ncol = 3, axes = "all_y", scales = "free_y")
+
+# save the plot
+ggsave(boxplot_timepoint, 
+       filename = paste0(output_folder, 
+                         experiment_id, 
+                         "_Boxplot_PreTreatmentsvsStims_Donors_IFNavsTNF.pdf"),
+       width = 12, 
+       height = 8
+)
+print(boxplot_timepoint)
+```
