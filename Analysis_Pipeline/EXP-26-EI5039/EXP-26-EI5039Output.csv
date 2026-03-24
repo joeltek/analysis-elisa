@@ -1,0 +1,337 @@
+Well,PlateID,Cytokine,Donor_ID,Sample,PreTreatment,Stim,Stim_Conc,Timepoint,Final_Concentration_pg_mL,Within_Range
+B1,P1,IFNa,Donor_1,Donor_1_Untreated_Unstim,Untreated,Unstim,0,20h,0.01,Below LLOD
+B2,P1,IFNa,Donor_1,Donor_1_IFNa_Unstim,IFNa,Unstim,0,20h,0.11,Below LLOD
+B3,P1,IFNa,Donor_1,Donor_1_IFNb_Unstim,IFNb,Unstim,0,20h,0.34,Below LLOD
+B4,P1,IFNa,Donor_1,Donor_1_IFNg_Unstim,IFNg,Unstim,0,20h,0.63,Between LLOD and LLOQ
+B5,P1,IFNa,Donor_1,Donor_1_TNF_Unstim,TNF,Unstim,0,20h,0.01,Below LLOD
+B6,P1,IFNa,Donor_1,Donor_1_IL-1b_Unstim,IL-1b,Unstim,0,20h,0.25,Below LLOD
+B7,P1,IFNa,Donor_1,Donor_1_IL-6_Unstim,IL-6,Unstim,0,20h,0.1,Below LLOD
+B8,P1,IFNa,Donor_1,Donor_1_IL-23_Unstim,IL-23,Unstim,0,20h,0.27,Below LLOD
+B9,P1,IFNa,Donor_1,Donor_1_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,0.29,Below LLOD
+B10,P1,IFNa,Donor_1,Donor_1_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,0.51,Between LLOD and LLOQ
+B11,P1,IFNa,Donor_1,Donor_1_R848_dup_Unstim,R848_dup,Unstim,0,20h,1.55,Between LLOD and LLOQ
+B12,P1,IFNa,Donor_1,Donor_1_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.08,Below LLOD
+C1,P1,IFNa,Donor_1,Donor_1_Untreated_LPS,Untreated,LPS,1,20h,30.24,Within Range
+C2,P1,IFNa,Donor_1,Donor_1_IFNa_LPS,IFNa,LPS,1,20h,0.05,Below LLOD
+C3,P1,IFNa,Donor_1,Donor_1_IFNb_LPS,IFNb,LPS,1,20h,50.28,Within Range
+C4,P1,IFNa,Donor_1,Donor_1_IFNg_LPS,IFNg,LPS,1,20h,59.73,Within Range
+C5,P1,IFNa,Donor_1,Donor_1_TNF_LPS,TNF,LPS,1,20h,4.88,Between LLOD and LLOQ
+C6,P1,IFNa,Donor_1,Donor_1_IL-1b_LPS,IL-1b,LPS,1,20h,2.98,Between LLOD and LLOQ
+C7,P1,IFNa,Donor_1,Donor_1_IL-6_LPS,IL-6,LPS,1,20h,51.39,Within Range
+C8,P1,IFNa,Donor_1,Donor_1_IL-23_LPS,IL-23,LPS,1,20h,48.3,Within Range
+C9,P1,IFNa,Donor_1,Donor_1_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,8.44,Within Range
+C10,P1,IFNa,Donor_1,Donor_1_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,0.14,Below LLOD
+C11,P1,IFNa,Donor_1,Donor_1_R848_dup_LPS,R848_dup,LPS,1,20h,0.12,Below LLOD
+C12,P1,IFNa,Donor_1,Donor_1_LPS_dup_LPS,LPS_dup,LPS,1,20h,0.14,Below LLOD
+D1,P1,IFNa,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,61.08,Within Range
+D2,P1,IFNa,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,39.33,Within Range
+D3,P1,IFNa,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,141.13,Within Range
+D4,P1,IFNa,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,95.28,Within Range
+D5,P1,IFNa,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,112.08,Within Range
+D6,P1,IFNa,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,63.12,Within Range
+D7,P1,IFNa,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,392.0,Above ULOQ
+D8,P1,IFNa,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,105.85,Within Range
+D9,P1,IFNa,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,432.8,Above ULOQ
+D10,P1,IFNa,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,14.49,Within Range
+D11,P1,IFNa,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,47.48,Within Range
+D12,P1,IFNa,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,142.01,Within Range
+E1,P1,IFNa,Donor_2,Donor_2_Untreated_Unstim,Untreated,Unstim,0,20h,0.97,Between LLOD and LLOQ
+E2,P1,IFNa,Donor_2,Donor_2_IFNa_Unstim,IFNa,Unstim,0,20h,0.2,Below LLOD
+E3,P1,IFNa,Donor_2,Donor_2_IFNb_Unstim,IFNb,Unstim,0,20h,1.19,Between LLOD and LLOQ
+E4,P1,IFNa,Donor_2,Donor_2_IFNg_Unstim,IFNg,Unstim,0,20h,0.12,Below LLOD
+E5,P1,IFNa,Donor_2,Donor_2_TNF_Unstim,TNF,Unstim,0,20h,0.13,Below LLOD
+E6,P1,IFNa,Donor_2,Donor_2_IL-1b_Unstim,IL-1b,Unstim,0,20h,0.45,Below LLOD
+E7,P1,IFNa,Donor_2,Donor_2_IL-6_Unstim,IL-6,Unstim,0,20h,0.11,Below LLOD
+E8,P1,IFNa,Donor_2,Donor_2_IL-23_Unstim,IL-23,Unstim,0,20h,1.26,Between LLOD and LLOQ
+E9,P1,IFNa,Donor_2,Donor_2_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,0.02,Below LLOD
+E10,P1,IFNa,Donor_2,Donor_2_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,0.31,Below LLOD
+E11,P1,IFNa,Donor_2,Donor_2_R848_dup_Unstim,R848_dup,Unstim,0,20h,0.21,Below LLOD
+E12,P1,IFNa,Donor_2,Donor_2_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.19,Below LLOD
+F1,P1,IFNa,Donor_2,Donor_2_Untreated_LPS,Untreated,LPS,1,20h,44.68,Within Range
+F2,P1,IFNa,Donor_2,Donor_2_IFNa_LPS,IFNa,LPS,1,20h,69.56,Within Range
+F3,P1,IFNa,Donor_2,Donor_2_IFNb_LPS,IFNb,LPS,1,20h,0.36,Below LLOD
+F4,P1,IFNa,Donor_2,Donor_2_IFNg_LPS,IFNg,LPS,1,20h,45.27,Within Range
+F5,P1,IFNa,Donor_2,Donor_2_TNF_LPS,TNF,LPS,1,20h,3.38,Between LLOD and LLOQ
+F6,P1,IFNa,Donor_2,Donor_2_IL-1b_LPS,IL-1b,LPS,1,20h,0.22,Below LLOD
+F7,P1,IFNa,Donor_2,Donor_2_IL-6_LPS,IL-6,LPS,1,20h,4.79,Between LLOD and LLOQ
+F8,P1,IFNa,Donor_2,Donor_2_IL-23_LPS,IL-23,LPS,1,20h,24.75,Within Range
+F9,P1,IFNa,Donor_2,Donor_2_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,1.3,Between LLOD and LLOQ
+F10,P1,IFNa,Donor_2,Donor_2_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,70.29,Within Range
+F11,P1,IFNa,Donor_2,Donor_2_R848_dup_LPS,R848_dup,LPS,1,20h,3.38,Between LLOD and LLOQ
+F12,P1,IFNa,Donor_2,Donor_2_LPS_dup_LPS,LPS_dup,LPS,1,20h,16.46,Within Range
+G1,P1,IFNa,Donor_2,Donor_2_Untreated_R848,Untreated,R848,500,20h,361.81,Above ULOQ
+G2,P1,IFNa,Donor_2,Donor_2_IFNa_R848,IFNa,R848,500,20h,359.11,Above ULOQ
+G3,P1,IFNa,Donor_2,Donor_2_IFNb_R848,IFNb,R848,500,20h,1.96,Between LLOD and LLOQ
+G4,P1,IFNa,Donor_2,Donor_2_IFNg_R848,IFNg,R848,500,20h,4.68,Between LLOD and LLOQ
+G5,P1,IFNa,Donor_2,Donor_2_TNF_R848,TNF,R848,500,20h,449.5,Above ULOQ
+G6,P1,IFNa,Donor_2,Donor_2_IL-1b_R848,IL-1b,R848,500,20h,18.11,Within Range
+G7,P1,IFNa,Donor_2,Donor_2_IL-6_R848,IL-6,R848,500,20h,484.08,Above ULOQ
+G8,P1,IFNa,Donor_2,Donor_2_IL-23_R848,IL-23,R848,500,20h,2.69,Between LLOD and LLOQ
+G9,P1,IFNa,Donor_2,Donor_2_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,3.92,Between LLOD and LLOQ
+G10,P1,IFNa,Donor_2,Donor_2_Unstim_dup_R848,Unstim_dup,R848,500,20h,238.52,Above ULOQ
+G11,P1,IFNa,Donor_2,Donor_2_R848_dup_R848,R848_dup,R848,500,20h,86.97,Within Range
+G12,P1,IFNa,Donor_2,Donor_2_LPS_dup_R848,LPS_dup,R848,500,20h,132.14,Within Range
+H1,P1,IFNa,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,39.65,Within Range
+H2,P1,IFNa,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,112.19,Within Range
+H3,P1,IFNa,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,53.64,Within Range
+H4,P1,IFNa,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,394.96,Above ULOQ
+H5,P1,IFNa,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,82.46,Within Range
+H6,P1,IFNa,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,1.51,Between LLOD and LLOQ
+H7,P1,IFNa,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,92.36,Within Range
+H8,P1,IFNa,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,40.83,Within Range
+H9,P1,IFNa,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,3.34,Between LLOD and LLOQ
+H10,P1,IFNa,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,136.76,Within Range
+H11,P1,IFNa,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,221.26,Above ULOQ
+H12,P1,IFNa,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,103.66,Within Range
+B1,P2,IFNa,Donor_1,Donor_1_Untreated_Unstim,Untreated,Unstim,0,20h,0.07,Below LLOD
+B2,P2,IFNa,Donor_1,Donor_1_IFNa_Unstim,IFNa,Unstim,0,20h,1.36,Between LLOD and LLOQ
+B3,P2,IFNa,Donor_1,Donor_1_IFNb_Unstim,IFNb,Unstim,0,20h,0.39,Below LLOD
+B4,P2,IFNa,Donor_1,Donor_1_IFNg_Unstim,IFNg,Unstim,0,20h,0.79,Between LLOD and LLOQ
+B5,P2,IFNa,Donor_1,Donor_1_TNF_Unstim,TNF,Unstim,0,20h,0.22,Below LLOD
+B6,P2,IFNa,Donor_1,Donor_1_IL-1b_Unstim,IL-1b,Unstim,0,20h,0.23,Below LLOD
+B7,P2,IFNa,Donor_1,Donor_1_IL-6_Unstim,IL-6,Unstim,0,20h,0.34,Below LLOD
+B8,P2,IFNa,Donor_1,Donor_1_IL-23_Unstim,IL-23,Unstim,0,20h,0.65,Between LLOD and LLOQ
+B9,P2,IFNa,Donor_1,Donor_1_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,0.17,Below LLOD
+B10,P2,IFNa,Donor_1,Donor_1_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,0.87,Between LLOD and LLOQ
+B11,P2,IFNa,Donor_1,Donor_1_R848_dup_Unstim,R848_dup,Unstim,0,20h,0.22,Below LLOD
+B12,P2,IFNa,Donor_1,Donor_1_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.14,Below LLOD
+C1,P2,IFNa,Donor_1,Donor_1_Untreated_LPS,Untreated,LPS,1,20h,0.46,Below LLOD
+C2,P2,IFNa,Donor_1,Donor_1_IFNa_LPS,IFNa,LPS,1,20h,4.38,Between LLOD and LLOQ
+C3,P2,IFNa,Donor_1,Donor_1_IFNb_LPS,IFNb,LPS,1,20h,8.79,Within Range
+C4,P2,IFNa,Donor_1,Donor_1_IFNg_LPS,IFNg,LPS,1,20h,67.7,Within Range
+C5,P2,IFNa,Donor_1,Donor_1_TNF_LPS,TNF,LPS,1,20h,74.48,Within Range
+C6,P2,IFNa,Donor_1,Donor_1_IL-1b_LPS,IL-1b,LPS,1,20h,17.47,Within Range
+C7,P2,IFNa,Donor_1,Donor_1_IL-6_LPS,IL-6,LPS,1,20h,1.46,Between LLOD and LLOQ
+C8,P2,IFNa,Donor_1,Donor_1_IL-23_LPS,IL-23,LPS,1,20h,0.76,Between LLOD and LLOQ
+C9,P2,IFNa,Donor_1,Donor_1_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,4.93,Between LLOD and LLOQ
+C10,P2,IFNa,Donor_1,Donor_1_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,4.03,Between LLOD and LLOQ
+C11,P2,IFNa,Donor_1,Donor_1_R848_dup_LPS,R848_dup,LPS,1,20h,2.4,Between LLOD and LLOQ
+C12,P2,IFNa,Donor_1,Donor_1_LPS_dup_LPS,LPS_dup,LPS,1,20h,79.66,Within Range
+D1,P2,IFNa,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,110.58,Within Range
+D2,P2,IFNa,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,51.54,Within Range
+D3,P2,IFNa,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,373.75,Above ULOQ
+D4,P2,IFNa,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,114.72,Within Range
+D5,P2,IFNa,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,3.13,Between LLOD and LLOQ
+D6,P2,IFNa,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,129.38,Within Range
+D7,P2,IFNa,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,144.51,Within Range
+D8,P2,IFNa,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,1.34,Between LLOD and LLOQ
+D9,P2,IFNa,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,104.53,Within Range
+D10,P2,IFNa,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,26.78,Within Range
+D11,P2,IFNa,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,273.86,Above ULOQ
+D12,P2,IFNa,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,96.71,Within Range
+E1,P2,IFNa,Donor_2,Donor_2_Untreated_Unstim,Untreated,Unstim,0,20h,0.29,Below LLOD
+E2,P2,IFNa,Donor_2,Donor_2_IFNa_Unstim,IFNa,Unstim,0,20h,0.47,Below LLOD
+E3,P2,IFNa,Donor_2,Donor_2_IFNb_Unstim,IFNb,Unstim,0,20h,0.36,Below LLOD
+E4,P2,IFNa,Donor_2,Donor_2_IFNg_Unstim,IFNg,Unstim,0,20h,0.2,Below LLOD
+E5,P2,IFNa,Donor_2,Donor_2_TNF_Unstim,TNF,Unstim,0,20h,0.15,Below LLOD
+E6,P2,IFNa,Donor_2,Donor_2_IL-1b_Unstim,IL-1b,Unstim,0,20h,0.38,Below LLOD
+E7,P2,IFNa,Donor_2,Donor_2_IL-6_Unstim,IL-6,Unstim,0,20h,0.23,Below LLOD
+E8,P2,IFNa,Donor_2,Donor_2_IL-23_Unstim,IL-23,Unstim,0,20h,1.99,Between LLOD and LLOQ
+E9,P2,IFNa,Donor_2,Donor_2_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,0.11,Below LLOD
+E10,P2,IFNa,Donor_2,Donor_2_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,0.47,Below LLOD
+E11,P2,IFNa,Donor_2,Donor_2_R848_dup_Unstim,R848_dup,Unstim,0,20h,1.82,Between LLOD and LLOQ
+E12,P2,IFNa,Donor_2,Donor_2_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.08,Below LLOD
+F1,P2,IFNa,Donor_2,Donor_2_Untreated_LPS,Untreated,LPS,1,20h,57.77,Within Range
+F2,P2,IFNa,Donor_2,Donor_2_IFNa_LPS,IFNa,LPS,1,20h,79.04,Within Range
+F3,P2,IFNa,Donor_2,Donor_2_IFNb_LPS,IFNb,LPS,1,20h,5.59,Within Range
+F4,P2,IFNa,Donor_2,Donor_2_IFNg_LPS,IFNg,LPS,1,20h,27.45,Within Range
+F5,P2,IFNa,Donor_2,Donor_2_TNF_LPS,TNF,LPS,1,20h,75.42,Within Range
+F6,P2,IFNa,Donor_2,Donor_2_IL-1b_LPS,IL-1b,LPS,1,20h,0.06,Below LLOD
+F7,P2,IFNa,Donor_2,Donor_2_IL-6_LPS,IL-6,LPS,1,20h,0.28,Below LLOD
+F8,P2,IFNa,Donor_2,Donor_2_IL-23_LPS,IL-23,LPS,1,20h,3.22,Between LLOD and LLOQ
+F9,P2,IFNa,Donor_2,Donor_2_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,20.27,Within Range
+F10,P2,IFNa,Donor_2,Donor_2_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,24.8,Within Range
+F11,P2,IFNa,Donor_2,Donor_2_R848_dup_LPS,R848_dup,LPS,1,20h,4.57,Between LLOD and LLOQ
+F12,P2,IFNa,Donor_2,Donor_2_LPS_dup_LPS,LPS_dup,LPS,1,20h,11.92,Within Range
+G1,P2,IFNa,Donor_2,Donor_2_Untreated_R848,Untreated,R848,500,20h,48.74,Within Range
+G2,P2,IFNa,Donor_2,Donor_2_IFNa_R848,IFNa,R848,500,20h,3.97,Between LLOD and LLOQ
+G3,P2,IFNa,Donor_2,Donor_2_IFNb_R848,IFNb,R848,500,20h,46.67,Within Range
+G4,P2,IFNa,Donor_2,Donor_2_IFNg_R848,IFNg,R848,500,20h,365.5,Above ULOQ
+G5,P2,IFNa,Donor_2,Donor_2_TNF_R848,TNF,R848,500,20h,11.35,Within Range
+G6,P2,IFNa,Donor_2,Donor_2_IL-1b_R848,IL-1b,R848,500,20h,4.47,Between LLOD and LLOQ
+G7,P2,IFNa,Donor_2,Donor_2_IL-6_R848,IL-6,R848,500,20h,363.68,Above ULOQ
+G8,P2,IFNa,Donor_2,Donor_2_IL-23_R848,IL-23,R848,500,20h,374.75,Above ULOQ
+G9,P2,IFNa,Donor_2,Donor_2_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,1.07,Between LLOD and LLOQ
+G10,P2,IFNa,Donor_2,Donor_2_Unstim_dup_R848,Unstim_dup,R848,500,20h,135.86,Within Range
+G11,P2,IFNa,Donor_2,Donor_2_R848_dup_R848,R848_dup,R848,500,20h,458.21,Above ULOQ
+G12,P2,IFNa,Donor_2,Donor_2_LPS_dup_R848,LPS_dup,R848,500,20h,263.02,Above ULOQ
+H1,P2,IFNa,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,24.39,Within Range
+H2,P2,IFNa,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,465.24,Above ULOQ
+H3,P2,IFNa,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,96.89,Within Range
+H4,P2,IFNa,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,140.18,Within Range
+H5,P2,IFNa,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,492.86,Above ULOQ
+H6,P2,IFNa,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,464.42,Above ULOQ
+H7,P2,IFNa,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,3.81,Between LLOD and LLOQ
+H8,P2,IFNa,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,140.31,Within Range
+H9,P2,IFNa,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,459.22,Above ULOQ
+H10,P2,IFNa,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,280.04,Above ULOQ
+H11,P2,IFNa,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,232.43,Above ULOQ
+H12,P2,IFNa,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,457.58,Above ULOQ
+B1,P1,TNF,Donor_1,Donor_1_Untreated_Unstim,Untreated,Unstim,0,20h,0.82,Below LLOD
+B2,P1,TNF,Donor_1,Donor_1_IFNa_Unstim,IFNa,Unstim,0,20h,0.31,Below LLOD
+B3,P1,TNF,Donor_1,Donor_1_IFNb_Unstim,IFNb,Unstim,0,20h,1.91,Between LLOD and LLOQ
+B4,P1,TNF,Donor_1,Donor_1_IFNg_Unstim,IFNg,Unstim,0,20h,0.19,Below LLOD
+B5,P1,TNF,Donor_1,Donor_1_TNF_Unstim,TNF,Unstim,0,20h,0.86,Below LLOD
+B6,P1,TNF,Donor_1,Donor_1_IL-1b_Unstim,IL-1b,Unstim,0,20h,2.12,Between LLOD and LLOQ
+B7,P1,TNF,Donor_1,Donor_1_IL-6_Unstim,IL-6,Unstim,0,20h,2.6,Between LLOD and LLOQ
+B8,P1,TNF,Donor_1,Donor_1_IL-23_Unstim,IL-23,Unstim,0,20h,3.14,Between LLOD and LLOQ
+B9,P1,TNF,Donor_1,Donor_1_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,1.46,Between LLOD and LLOQ
+B10,P1,TNF,Donor_1,Donor_1_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,1.71,Between LLOD and LLOQ
+B11,P1,TNF,Donor_1,Donor_1_R848_dup_Unstim,R848_dup,Unstim,0,20h,2.06,Between LLOD and LLOQ
+B12,P1,TNF,Donor_1,Donor_1_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.43,Below LLOD
+C1,P1,TNF,Donor_1,Donor_1_Untreated_LPS,Untreated,LPS,1,20h,107.83,Within Range
+C2,P1,TNF,Donor_1,Donor_1_IFNa_LPS,IFNa,LPS,1,20h,163.2,Within Range
+C3,P1,TNF,Donor_1,Donor_1_IFNb_LPS,IFNb,LPS,1,20h,181.44,Within Range
+C4,P1,TNF,Donor_1,Donor_1_IFNg_LPS,IFNg,LPS,1,20h,218.46,Within Range
+C5,P1,TNF,Donor_1,Donor_1_TNF_LPS,TNF,LPS,1,20h,4.7,Between LLOD and LLOQ
+C6,P1,TNF,Donor_1,Donor_1_IL-1b_LPS,IL-1b,LPS,1,20h,221.44,Within Range
+C7,P1,TNF,Donor_1,Donor_1_IL-6_LPS,IL-6,LPS,1,20h,207.78,Within Range
+C8,P1,TNF,Donor_1,Donor_1_IL-23_LPS,IL-23,LPS,1,20h,39.59,Within Range
+C9,P1,TNF,Donor_1,Donor_1_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,112.46,Within Range
+C10,P1,TNF,Donor_1,Donor_1_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,257.44,Within Range
+C11,P1,TNF,Donor_1,Donor_1_R848_dup_LPS,R848_dup,LPS,1,20h,104.09,Within Range
+C12,P1,TNF,Donor_1,Donor_1_LPS_dup_LPS,LPS_dup,LPS,1,20h,134.35,Within Range
+D1,P1,TNF,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,84.48,Within Range
+D2,P1,TNF,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,113.8,Within Range
+D3,P1,TNF,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,587.06,Above ULOQ
+D4,P1,TNF,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,565.43,Above ULOQ
+D5,P1,TNF,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,143.77,Within Range
+D6,P1,TNF,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,0.29,Below LLOD
+D7,P1,TNF,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,151.3,Within Range
+D8,P1,TNF,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,124.27,Within Range
+D9,P1,TNF,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,65.22,Within Range
+D10,P1,TNF,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,226.78,Within Range
+D11,P1,TNF,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,409.39,Above ULOQ
+D12,P1,TNF,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,136.13,Within Range
+E1,P1,TNF,Donor_2,Donor_2_Untreated_Unstim,Untreated,Unstim,0,20h,2.34,Between LLOD and LLOQ
+E2,P1,TNF,Donor_2,Donor_2_IFNa_Unstim,IFNa,Unstim,0,20h,4.0,Between LLOD and LLOQ
+E3,P1,TNF,Donor_2,Donor_2_IFNb_Unstim,IFNb,Unstim,0,20h,1.9,Between LLOD and LLOQ
+E4,P1,TNF,Donor_2,Donor_2_IFNg_Unstim,IFNg,Unstim,0,20h,0.02,Below LLOD
+E5,P1,TNF,Donor_2,Donor_2_TNF_Unstim,TNF,Unstim,0,20h,0.48,Below LLOD
+E6,P1,TNF,Donor_2,Donor_2_IL-1b_Unstim,IL-1b,Unstim,0,20h,1.29,Between LLOD and LLOQ
+E7,P1,TNF,Donor_2,Donor_2_IL-6_Unstim,IL-6,Unstim,0,20h,0.63,Below LLOD
+E8,P1,TNF,Donor_2,Donor_2_IL-23_Unstim,IL-23,Unstim,0,20h,0.7,Below LLOD
+E9,P1,TNF,Donor_2,Donor_2_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,0.24,Below LLOD
+E10,P1,TNF,Donor_2,Donor_2_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,1.02,Between LLOD and LLOQ
+E11,P1,TNF,Donor_2,Donor_2_R848_dup_Unstim,R848_dup,Unstim,0,20h,4.08,Between LLOD and LLOQ
+E12,P1,TNF,Donor_2,Donor_2_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.43,Below LLOD
+F1,P1,TNF,Donor_2,Donor_2_Untreated_LPS,Untreated,LPS,1,20h,288.23,Within Range
+F2,P1,TNF,Donor_2,Donor_2_IFNa_LPS,IFNa,LPS,1,20h,34.06,Within Range
+F3,P1,TNF,Donor_2,Donor_2_IFNb_LPS,IFNb,LPS,1,20h,257.53,Within Range
+F4,P1,TNF,Donor_2,Donor_2_IFNg_LPS,IFNg,LPS,1,20h,244.4,Within Range
+F5,P1,TNF,Donor_2,Donor_2_TNF_LPS,TNF,LPS,1,20h,296.61,Within Range
+F6,P1,TNF,Donor_2,Donor_2_IL-1b_LPS,IL-1b,LPS,1,20h,286.01,Within Range
+F7,P1,TNF,Donor_2,Donor_2_IL-6_LPS,IL-6,LPS,1,20h,645.06,Above ULOQ
+F8,P1,TNF,Donor_2,Donor_2_IL-23_LPS,IL-23,LPS,1,20h,161.34,Within Range
+F9,P1,TNF,Donor_2,Donor_2_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,619.15,Above ULOQ
+F10,P1,TNF,Donor_2,Donor_2_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,697.46,Above ULOQ
+F11,P1,TNF,Donor_2,Donor_2_R848_dup_LPS,R848_dup,LPS,1,20h,92.57,Within Range
+F12,P1,TNF,Donor_2,Donor_2_LPS_dup_LPS,LPS_dup,LPS,1,20h,198.55,Within Range
+G1,P1,TNF,Donor_2,Donor_2_Untreated_R848,Untreated,R848,500,20h,532.45,Above ULOQ
+G2,P1,TNF,Donor_2,Donor_2_IFNa_R848,IFNa,R848,500,20h,79.53,Within Range
+G3,P1,TNF,Donor_2,Donor_2_IFNb_R848,IFNb,R848,500,20h,82.15,Within Range
+G4,P1,TNF,Donor_2,Donor_2_IFNg_R848,IFNg,R848,500,20h,90.13,Within Range
+G5,P1,TNF,Donor_2,Donor_2_TNF_R848,TNF,R848,500,20h,47.52,Within Range
+G6,P1,TNF,Donor_2,Donor_2_IL-1b_R848,IL-1b,R848,500,20h,178.08,Within Range
+G7,P1,TNF,Donor_2,Donor_2_IL-6_R848,IL-6,R848,500,20h,30.09,Within Range
+G8,P1,TNF,Donor_2,Donor_2_IL-23_R848,IL-23,R848,500,20h,142.51,Within Range
+G9,P1,TNF,Donor_2,Donor_2_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,63.61,Within Range
+G10,P1,TNF,Donor_2,Donor_2_Unstim_dup_R848,Unstim_dup,R848,500,20h,227.64,Within Range
+G11,P1,TNF,Donor_2,Donor_2_R848_dup_R848,R848_dup,R848,500,20h,178.45,Within Range
+G12,P1,TNF,Donor_2,Donor_2_LPS_dup_R848,LPS_dup,R848,500,20h,617.96,Above ULOQ
+H1,P1,TNF,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,16.39,Within Range
+H2,P1,TNF,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,192.07,Within Range
+H3,P1,TNF,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,683.7,Above ULOQ
+H4,P1,TNF,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,190.67,Within Range
+H5,P1,TNF,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,156.76,Within Range
+H6,P1,TNF,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,66.56,Within Range
+H7,P1,TNF,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,21.82,Within Range
+H8,P1,TNF,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,174.6,Within Range
+H9,P1,TNF,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,53.79,Within Range
+H10,P1,TNF,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,44.99,Within Range
+H11,P1,TNF,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,21.34,Within Range
+H12,P1,TNF,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,147.63,Within Range
+B1,P2,TNF,Donor_1,Donor_1_Untreated_Unstim,Untreated,Unstim,0,20h,0.64,Below LLOD
+B2,P2,TNF,Donor_1,Donor_1_IFNa_Unstim,IFNa,Unstim,0,20h,0.46,Below LLOD
+B3,P2,TNF,Donor_1,Donor_1_IFNb_Unstim,IFNb,Unstim,0,20h,0.38,Below LLOD
+B4,P2,TNF,Donor_1,Donor_1_IFNg_Unstim,IFNg,Unstim,0,20h,0.33,Below LLOD
+B5,P2,TNF,Donor_1,Donor_1_TNF_Unstim,TNF,Unstim,0,20h,2.52,Between LLOD and LLOQ
+B6,P2,TNF,Donor_1,Donor_1_IL-1b_Unstim,IL-1b,Unstim,0,20h,4.33,Between LLOD and LLOQ
+B7,P2,TNF,Donor_1,Donor_1_IL-6_Unstim,IL-6,Unstim,0,20h,0.08,Below LLOD
+B8,P2,TNF,Donor_1,Donor_1_IL-23_Unstim,IL-23,Unstim,0,20h,0.54,Below LLOD
+B9,P2,TNF,Donor_1,Donor_1_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,2.4,Between LLOD and LLOQ
+B10,P2,TNF,Donor_1,Donor_1_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,4.12,Between LLOD and LLOQ
+B11,P2,TNF,Donor_1,Donor_1_R848_dup_Unstim,R848_dup,Unstim,0,20h,4.02,Between LLOD and LLOQ
+B12,P2,TNF,Donor_1,Donor_1_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,1.8,Between LLOD and LLOQ
+C1,P2,TNF,Donor_1,Donor_1_Untreated_LPS,Untreated,LPS,1,20h,1.61,Between LLOD and LLOQ
+C2,P2,TNF,Donor_1,Donor_1_IFNa_LPS,IFNa,LPS,1,20h,207.45,Within Range
+C3,P2,TNF,Donor_1,Donor_1_IFNb_LPS,IFNb,LPS,1,20h,81.03,Within Range
+C4,P2,TNF,Donor_1,Donor_1_IFNg_LPS,IFNg,LPS,1,20h,234.73,Within Range
+C5,P2,TNF,Donor_1,Donor_1_TNF_LPS,TNF,LPS,1,20h,190.03,Within Range
+C6,P2,TNF,Donor_1,Donor_1_IL-1b_LPS,IL-1b,LPS,1,20h,52.07,Within Range
+C7,P2,TNF,Donor_1,Donor_1_IL-6_LPS,IL-6,LPS,1,20h,785.89,Above ULOQ
+C8,P2,TNF,Donor_1,Donor_1_IL-23_LPS,IL-23,LPS,1,20h,27.19,Within Range
+C9,P2,TNF,Donor_1,Donor_1_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,209.66,Within Range
+C10,P2,TNF,Donor_1,Donor_1_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,558.66,Above ULOQ
+C11,P2,TNF,Donor_1,Donor_1_R848_dup_LPS,R848_dup,LPS,1,20h,41.28,Within Range
+C12,P2,TNF,Donor_1,Donor_1_LPS_dup_LPS,LPS_dup,LPS,1,20h,195.63,Within Range
+D1,P2,TNF,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,196.53,Within Range
+D2,P2,TNF,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,560.14,Above ULOQ
+D3,P2,TNF,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,246.2,Within Range
+D4,P2,TNF,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,471.52,Above ULOQ
+D5,P2,TNF,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,102.08,Within Range
+D6,P2,TNF,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,95.19,Within Range
+D7,P2,TNF,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,637.82,Above ULOQ
+D8,P2,TNF,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,240.79,Within Range
+D9,P2,TNF,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,209.75,Within Range
+D10,P2,TNF,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,117.34,Within Range
+D11,P2,TNF,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,241.89,Within Range
+D12,P2,TNF,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,204.93,Within Range
+E1,P2,TNF,Donor_2,Donor_2_Untreated_Unstim,Untreated,Unstim,0,20h,0.48,Below LLOD
+E2,P2,TNF,Donor_2,Donor_2_IFNa_Unstim,IFNa,Unstim,0,20h,0.73,Below LLOD
+E3,P2,TNF,Donor_2,Donor_2_IFNb_Unstim,IFNb,Unstim,0,20h,0.85,Below LLOD
+E4,P2,TNF,Donor_2,Donor_2_IFNg_Unstim,IFNg,Unstim,0,20h,1.35,Between LLOD and LLOQ
+E5,P2,TNF,Donor_2,Donor_2_TNF_Unstim,TNF,Unstim,0,20h,1.98,Between LLOD and LLOQ
+E6,P2,TNF,Donor_2,Donor_2_IL-1b_Unstim,IL-1b,Unstim,0,20h,0.61,Below LLOD
+E7,P2,TNF,Donor_2,Donor_2_IL-6_Unstim,IL-6,Unstim,0,20h,0.03,Below LLOD
+E8,P2,TNF,Donor_2,Donor_2_IL-23_Unstim,IL-23,Unstim,0,20h,1.73,Between LLOD and LLOQ
+E9,P2,TNF,Donor_2,Donor_2_IFNa+TNF_Unstim,IFNa+TNF,Unstim,0,20h,0.8,Below LLOD
+E10,P2,TNF,Donor_2,Donor_2_Unstim_dup_Unstim,Unstim_dup,Unstim,0,20h,0.88,Below LLOD
+E11,P2,TNF,Donor_2,Donor_2_R848_dup_Unstim,R848_dup,Unstim,0,20h,2.11,Between LLOD and LLOQ
+E12,P2,TNF,Donor_2,Donor_2_LPS_dup_Unstim,LPS_dup,Unstim,0,20h,0.95,Below LLOD
+F1,P2,TNF,Donor_2,Donor_2_Untreated_LPS,Untreated,LPS,1,20h,3.88,Between LLOD and LLOQ
+F2,P2,TNF,Donor_2,Donor_2_IFNa_LPS,IFNa,LPS,1,20h,232.29,Within Range
+F3,P2,TNF,Donor_2,Donor_2_IFNb_LPS,IFNb,LPS,1,20h,200.85,Within Range
+F4,P2,TNF,Donor_2,Donor_2_IFNg_LPS,IFNg,LPS,1,20h,242.02,Within Range
+F5,P2,TNF,Donor_2,Donor_2_TNF_LPS,TNF,LPS,1,20h,1.89,Between LLOD and LLOQ
+F6,P2,TNF,Donor_2,Donor_2_IL-1b_LPS,IL-1b,LPS,1,20h,105.74,Within Range
+F7,P2,TNF,Donor_2,Donor_2_IL-6_LPS,IL-6,LPS,1,20h,152.51,Within Range
+F8,P2,TNF,Donor_2,Donor_2_IL-23_LPS,IL-23,LPS,1,20h,139.14,Within Range
+F9,P2,TNF,Donor_2,Donor_2_IFNa+TNF_LPS,IFNa+TNF,LPS,1,20h,112.62,Within Range
+F10,P2,TNF,Donor_2,Donor_2_Unstim_dup_LPS,Unstim_dup,LPS,1,20h,95.86,Within Range
+F11,P2,TNF,Donor_2,Donor_2_R848_dup_LPS,R848_dup,LPS,1,20h,53.78,Within Range
+F12,P2,TNF,Donor_2,Donor_2_LPS_dup_LPS,LPS_dup,LPS,1,20h,53.48,Within Range
+G1,P2,TNF,Donor_2,Donor_2_Untreated_R848,Untreated,R848,500,20h,194.11,Within Range
+G2,P2,TNF,Donor_2,Donor_2_IFNa_R848,IFNa,R848,500,20h,65.85,Within Range
+G3,P2,TNF,Donor_2,Donor_2_IFNb_R848,IFNb,R848,500,20h,185.28,Within Range
+G4,P2,TNF,Donor_2,Donor_2_IFNg_R848,IFNg,R848,500,20h,533.62,Above ULOQ
+G5,P2,TNF,Donor_2,Donor_2_TNF_R848,TNF,R848,500,20h,38.62,Within Range
+G6,P2,TNF,Donor_2,Donor_2_IL-1b_R848,IL-1b,R848,500,20h,68.46,Within Range
+G7,P2,TNF,Donor_2,Donor_2_IL-6_R848,IL-6,R848,500,20h,18.32,Within Range
+G8,P2,TNF,Donor_2,Donor_2_IL-23_R848,IL-23,R848,500,20h,79.46,Within Range
+G9,P2,TNF,Donor_2,Donor_2_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,543.68,Above ULOQ
+G10,P2,TNF,Donor_2,Donor_2_Unstim_dup_R848,Unstim_dup,R848,500,20h,44.68,Within Range
+G11,P2,TNF,Donor_2,Donor_2_R848_dup_R848,R848_dup,R848,500,20h,521.81,Above ULOQ
+G12,P2,TNF,Donor_2,Donor_2_LPS_dup_R848,LPS_dup,R848,500,20h,550.92,Above ULOQ
+H1,P2,TNF,Donor_1,Donor_1_Untreated_R848,Untreated,R848,500,20h,118.51,Within Range
+H2,P2,TNF,Donor_1,Donor_1_IFNa_R848,IFNa,R848,500,20h,27.07,Within Range
+H3,P2,TNF,Donor_1,Donor_1_IFNb_R848,IFNb,R848,500,20h,517.21,Above ULOQ
+H4,P2,TNF,Donor_1,Donor_1_IFNg_R848,IFNg,R848,500,20h,490.25,Above ULOQ
+H5,P2,TNF,Donor_1,Donor_1_TNF_R848,TNF,R848,500,20h,162.92,Within Range
+H6,P2,TNF,Donor_1,Donor_1_IL-1b_R848,IL-1b,R848,500,20h,50.06,Within Range
+H7,P2,TNF,Donor_1,Donor_1_IL-6_R848,IL-6,R848,500,20h,86.4,Within Range
+H8,P2,TNF,Donor_1,Donor_1_IL-23_R848,IL-23,R848,500,20h,391.46,Above ULOQ
+H9,P2,TNF,Donor_1,Donor_1_IFNa+TNF_R848,IFNa+TNF,R848,500,20h,562.21,Above ULOQ
+H10,P2,TNF,Donor_1,Donor_1_Unstim_dup_R848,Unstim_dup,R848,500,20h,428.99,Above ULOQ
+H11,P2,TNF,Donor_1,Donor_1_R848_dup_R848,R848_dup,R848,500,20h,120.87,Within Range
+H12,P2,TNF,Donor_1,Donor_1_LPS_dup_R848,LPS_dup,R848,500,20h,217.14,Within Range
