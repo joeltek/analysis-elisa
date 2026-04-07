@@ -39,6 +39,10 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
+# renv lock file and folder
+.lock
+/renv
+
 # pkgdown site
 docs/
 
