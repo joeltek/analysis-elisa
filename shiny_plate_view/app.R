@@ -84,6 +84,15 @@ get_df_column <- function(mapping_df, cytokine) {
   NULL
 }
 
+# Return "B" for blank wells, "S" for standard wells, NA otherwise.
+well_label <- function(content) {
+  dplyr::case_when(
+    grepl("^blank$",   content, ignore.case = TRUE) ~ "B",
+    grepl("standard",  content, ignore.case = TRUE) ~ "S",
+    TRUE ~ NA_character_
+  )
+}
+
 # ---- Plate layout helpers ----
 
 # Parse well ID (e.g. "A1", "H12") into separate Row / Col columns.
@@ -123,11 +132,19 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
     filter(PlateID == plate_id) %>%
     add_well_coords()
 
+  if ("Content" %in% names(plate_data)) {
+    plate_data <- plate_data %>% mutate(Well_Label = well_label(Content))
+  } else {
+    plate_data$Well_Label <- NA_character_
+  }
+
   ggplot(plate_data,
          aes(x = Col, y = Row, fill = as.numeric(.data[[df_col]]))) +
     geom_tile(colour = "white", linewidth = 0.6) +
+    geom_text(aes(label = Well_Label), size = 3, fontface = "bold",
+              colour = "gray30", na.rm = TRUE, show.legend = FALSE) +
     scale_fill_viridis_c(
-      name = "Dilution\nfactor",
+      name = "Dilution factor",
       option = "plasma",
       na.value = NA_FILL,
       direction = 1
@@ -146,7 +163,7 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
       panel.grid  = element_blank(),
       plot.title  = element_text(face = "bold", hjust = 0.5),
       axis.ticks  = element_blank(),
-      legend.position = "right"
+      legend.position = "bottom"
     )
 }
 
@@ -169,12 +186,16 @@ make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
     add_well_coords() %>%
     mutate(
       Within_Range = factor(Within_Range,
-                            levels = names(WITHIN_RANGE_COLOURS))
+                            levels = names(WITHIN_RANGE_COLOURS)),
+      Well_Label = if ("Content" %in% names(.)) well_label(Content)
+                  else NA_character_
     )
 
   ggplot(plot_data,
          aes(x = Col, y = Row, fill = Within_Range)) +
     geom_tile(colour = "white", linewidth = 0.6) +
+    geom_text(aes(label = Well_Label), size = 3, fontface = "bold",
+              colour = "gray30", na.rm = TRUE, show.legend = FALSE) +
     scale_fill_manual(
       name   = "Within Range",
       values = WITHIN_RANGE_COLOURS,
@@ -195,7 +216,7 @@ make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
       panel.grid  = element_blank(),
       plot.title  = element_text(face = "bold", hjust = 0.5),
       axis.ticks  = element_blank(),
-      legend.position = "right"
+      legend.position = "bottom"
     )
 }
 
@@ -265,18 +286,7 @@ ui <- fluidPage(
 
     mainPanel(
       width = 9,
-      fluidRow(
-        column(
-          6,
-          h4("Dilution Factor", style = "text-align:center;"),
-          plotOutput("dilution_heatmap", height = "380px")
-        ),
-        column(
-          6,
-          h4("Assay Performance", style = "text-align:center;"),
-          plotOutput("range_heatmap", height = "380px")
-        )
-      )
+      uiOutput("plates_ui")
     )
   )
 )
@@ -317,18 +327,19 @@ server <- function(input, output, session) {
                       selected = if (length(cytokines) > 0) cytokines[1] else NULL)
   })
 
-  # Populate plate dropdown from the output CSV
+  # Populate plate dropdown from the output CSV (plus "All" option)
   observe({
     df <- output_data()
     if (is.null(df)) return()
     plates <- sort(unique(df$PlateID))
     updateSelectInput(session, "plate_id",
-                      choices  = plates,
+                      choices  = c("All", plates),
                       selected = if (length(plates) > 0) plates[1] else NULL)
   })
 
-  # Dilution factor heatmap
+  # Dilution factor heatmap (single-plate view)
   output$dilution_heatmap <- renderPlot({
+    req(input$plate_id != "All")
     mapping <- mapping_data()
     if (is.null(mapping)) {
       return(ggplot() +
@@ -341,8 +352,9 @@ server <- function(input, output, session) {
     make_dilution_heatmap(mapping, input$plate_id, df_col)
   })
 
-  # Assay performance (Within_Range) heatmap
+  # Assay performance (Within_Range) heatmap (single-plate view)
   output$range_heatmap <- renderPlot({
+    req(input$plate_id != "All")
     mapping <- mapping_data()
     output_df <- output_data()
     if (is.null(mapping) || is.null(output_df)) {
@@ -353,6 +365,64 @@ server <- function(input, output, session) {
     }
     req(input$cytokine)
     make_range_heatmap(mapping, output_df, input$plate_id, input$cytokine)
+  })
+
+  # Dynamic per-plate plots used in the "All" view
+  observe({
+    mapping <- mapping_data()
+    output_df <- output_data()
+    req(mapping, output_df, input$cytokine)
+
+    plates <- sort(unique(output_df$PlateID))
+    lapply(plates, function(pid) {
+      local({
+        p_id  <- pid
+        cyt   <- input$cytokine
+        m_df  <- mapping
+        o_df  <- output_df
+
+        output[[paste0("plot_df_",    p_id)]] <- renderPlot({
+          df_col <- get_df_column(m_df, cyt)
+          make_dilution_heatmap(m_df, p_id, df_col)
+        })
+
+        output[[paste0("plot_range_", p_id)]] <- renderPlot({
+          make_range_heatmap(m_df, o_df, p_id, cyt)
+        })
+      })
+    })
+  })
+
+  # Main panel UI: single plate or all plates
+  output$plates_ui <- renderUI({
+    req(input$plate_id)
+
+    if (input$plate_id == "All") {
+      df     <- output_data()
+      plates <- if (!is.null(df)) sort(unique(df$PlateID)) else character(0)
+
+      tagList(
+        fluidRow(
+          column(6, h4("Dilution Factor",    style = "text-align:center;")),
+          column(6, h4("Assay Performance",  style = "text-align:center;"))
+        ),
+        lapply(plates, function(pid) {
+          fluidRow(
+            column(6, plotOutput(paste0("plot_df_",    pid), height = "430px")),
+            column(6, plotOutput(paste0("plot_range_", pid), height = "430px"))
+          )
+        })
+      )
+    } else {
+      fluidRow(
+        column(6,
+               h4("Dilution Factor",   style = "text-align:center;"),
+               plotOutput("dilution_heatmap", height = "430px")),
+        column(6,
+               h4("Assay Performance", style = "text-align:center;"),
+               plotOutput("range_heatmap",    height = "430px"))
+      )
+    }
   })
 }
 
