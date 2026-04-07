@@ -56,7 +56,18 @@ load_mapping <- function(root_dir, exp_id) {
 load_output <- function(root_dir, exp_id) {
   path <- file.path(root_dir, "data_files", paste0(exp_id, "Output.csv"))
   if (!file.exists(path)) return(NULL)
-  read.csv(path, stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+  # Detect delimiter from the first line
+  first_line <- readLines(path, n = 1)
+  sep <- if (grepl(";", first_line)) ";" else ","
+
+  df <- read.csv(path, sep = sep, stringsAsFactors = FALSE,
+                 na.strings = c("", "NA"))
+
+  # Normalise well IDs: uppercase row letter, strip leading zeros (B01 -> B1)
+  df$Well <- toupper(gsub("^([A-Ha-h])0*(\\d+)$", "\\1\\2", df$Well))
+
+  df
 }
 
 # Find the dilution-factor column that matches a given cytokine.
