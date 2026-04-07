@@ -47,8 +47,8 @@ load_mapping <- function(root_dir, exp_id) {
     df$PlateID <- "P1"
   }
 
-  # Normalise well IDs: strip leading zeros from the column number (A01 -> A1)
-  df$Well <- gsub("^([A-Ha-h])0*(\\d+)$", "\\1\\2", df$Well)
+  # Normalise well IDs: uppercase row letter, strip leading zeros (A01 -> A1)
+  df$Well <- toupper(gsub("^([A-Ha-h])0*(\\d+)$", "\\1\\2", df$Well))
 
   df
 }
@@ -60,12 +60,11 @@ load_output <- function(root_dir, exp_id) {
 }
 
 # Find the dilution-factor column that matches a given cytokine.
-# Tries DF_{cytokine} (exact, then case-insensitive), then "Dilution_Factor",
+# Tries DF_{cytokine} (case-insensitive), then "Dilution_Factor",
 # then the first DF_* column found.
 get_df_column <- function(mapping_df, cytokine) {
   cols <- names(mapping_df)
   candidate <- paste0("DF_", cytokine)
-  if (candidate %in% cols) return(candidate)
   idx <- which(tolower(cols) == tolower(candidate))
   if (length(idx) > 0) return(cols[idx[1]])
   if ("Dilution_Factor" %in% cols) return("Dilution_Factor")
@@ -111,11 +110,10 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
 
   plate_data <- data %>%
     filter(PlateID == plate_id) %>%
-    add_well_coords() %>%
-    mutate(Dilution_Factor = as.numeric(.data[[df_col]]))
+    add_well_coords()
 
   ggplot(plate_data,
-         aes(x = Col, y = Row, fill = Dilution_Factor)) +
+         aes(x = Col, y = Row, fill = as.numeric(.data[[df_col]]))) +
     geom_tile(colour = "white", linewidth = 0.6) +
     scale_fill_viridis_c(
       name = "Dilution\nfactor",
