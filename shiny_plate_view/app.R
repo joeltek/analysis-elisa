@@ -20,23 +20,58 @@ get_root_dir <- function() {
 # ---- Data loading helpers ----
 
 get_experiment_ids <- function(root_dir) {
-  pipeline_dir <- file.path(root_dir, "Analysis_Pipeline")
-  if (!dir.exists(pipeline_dir)) return(character(0))
-  ids <- list.dirs(pipeline_dir, full.names = FALSE, recursive = FALSE)
-  ids[nchar(ids) > 0]
+  data_dir <- file.path(root_dir, "data_files")
+  if (!dir.exists(data_dir)) return(character(0))
+  files <- list.files(data_dir, pattern = "Output\\.csv$", full.names = FALSE)
+  sub("Output\\.csv$", "", files)
 }
 
 load_mapping <- function(root_dir, exp_id) {
-  path <- file.path(root_dir, "mapping files", paste0(exp_id, "_MappingFile.csv"))
+  path <- file.path(root_dir, "map_files", paste0(exp_id, "_MappingFile.csv"))
+  if (!file.exists(path)) return(NULL)
+
+  # Detect delimiter from the first line
+  first_line <- readLines(path, n = 1)
+  sep <- if (grepl(";", first_line)) ";" else ","
+
+  df <- read.csv(path, sep = sep, stringsAsFactors = FALSE,
+                 na.strings = c("", "NA"))
+
+  # Flexible column name: rename Sample -> Sample_ID if needed
+  if ("Sample" %in% names(df) && !"Sample_ID" %in% names(df)) {
+    names(df)[names(df) == "Sample"] <- "Sample_ID"
+  }
+
+  # Add PlateID if absent (single-plate file: assume P1)
+  if (!"PlateID" %in% names(df)) {
+    df$PlateID <- "P1"
+  }
+
+  # Normalise well IDs: strip leading zeros from the column number (A01 -> A1)
+  df$Well <- gsub("^([A-Ha-h])0*(\\d+)$", "\\1\\2", df$Well)
+
+  df
+}
+
+load_output <- function(root_dir, exp_id) {
+  path <- file.path(root_dir, "data_files", paste0(exp_id, "Output.csv"))
   if (!file.exists(path)) return(NULL)
   read.csv(path, stringsAsFactors = FALSE, na.strings = c("", "NA"))
 }
 
-load_output <- function(root_dir, exp_id) {
-  path <- file.path(root_dir, "Analysis_Pipeline", exp_id,
-                    paste0(exp_id, "Output.csv"))
-  if (!file.exists(path)) return(NULL)
-  read.csv(path, stringsAsFactors = FALSE, na.strings = c("", "NA"))
+# Find the dilution-factor column that matches a given cytokine.
+# Tries DF_{cytokine} (exact, then case-insensitive), then "Dilution_Factor",
+# then the first DF_* column found.
+get_df_column <- function(mapping_df, cytokine) {
+  cols <- names(mapping_df)
+  candidate <- paste0("DF_", cytokine)
+  if (candidate %in% cols) return(candidate)
+  idx <- which(tolower(cols) == tolower(candidate))
+  if (length(idx) > 0) return(cols[idx[1]])
+  if ("Dilution_Factor" %in% cols) return("Dilution_Factor")
+  df_cols <- grep("^DF_", cols, value = TRUE)
+  if (length(df_cols) > 0) return(df_cols[1])
+  NULL
 }
 
 # ---- Plate layout helpers ----
@@ -65,10 +100,19 @@ WITHIN_RANGE_COLOURS <- c(
 NA_FILL <- "grey92"
 
 # Build a 96-well plate heatmap for dilution factor (continuous numeric fill).
-make_dilution_heatmap <- function(data, plate_id) {
+# df_col: name of the column to use as dilution factor (e.g. "DF_IFNa").
+make_dilution_heatmap <- function(data, plate_id, df_col) {
+  if (is.null(df_col) || !df_col %in% names(data)) {
+    return(ggplot() +
+             annotate("text", x = 0.5, y = 0.5,
+                      label = "Dilution factor column not found", size = 5) +
+             theme_void())
+  }
+
   plate_data <- data %>%
     filter(PlateID == plate_id) %>%
-    add_well_coords()
+    add_well_coords() %>%
+    mutate(Dilution_Factor = as.numeric(.data[[df_col]]))
 
   ggplot(plate_data,
          aes(x = Col, y = Row, fill = Dilution_Factor)) +
@@ -103,7 +147,7 @@ make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
   # All wells for this plate (from mapping)
   all_wells <- mapping_data %>%
     filter(PlateID == plate_id) %>%
-    select(Well, PlateID, Content, Sample_ID)
+    select(any_of(c("Well", "PlateID", "Content", "Sample_ID")))
 
   # Sample results for this plate + cytokine
   results <- output_data %>%
@@ -166,8 +210,8 @@ ui <- fluidPage(
       selectInput(
         "plate_id",
         label    = "Plate:",
-        choices  = c("P1", "P2"),
-        selected = "P1"
+        choices  = NULL,
+        selected = NULL
       ),
 
       selectInput(
@@ -264,6 +308,16 @@ server <- function(input, output, session) {
                       selected = if (length(cytokines) > 0) cytokines[1] else NULL)
   })
 
+  # Populate plate dropdown from the output CSV
+  observe({
+    df <- output_data()
+    if (is.null(df)) return()
+    plates <- sort(unique(df$PlateID))
+    updateSelectInput(session, "plate_id",
+                      choices  = plates,
+                      selected = if (length(plates) > 0) plates[1] else NULL)
+  })
+
   # Dilution factor heatmap
   output$dilution_heatmap <- renderPlot({
     mapping <- mapping_data()
@@ -273,7 +327,9 @@ server <- function(input, output, session) {
                         label = "Mapping file not found", size = 5) +
                theme_void())
     }
-    make_dilution_heatmap(mapping, input$plate_id)
+    req(input$cytokine)
+    df_col <- get_df_column(mapping, input$cytokine)
+    make_dilution_heatmap(mapping, input$plate_id, df_col)
   })
 
   # Assay performance (Within_Range) heatmap
