@@ -50,6 +50,14 @@ load_mapping <- function(root_dir, exp_id) {
   # Normalise well IDs: uppercase row letter, strip leading zeros (A01 -> A1)
   df$Well <- toupper(gsub("^([A-Ha-h])0*(\\d+)$", "\\1\\2", df$Well))
 
+  # Fix decimal-comma values in DF columns (e.g. "1,5" -> 1.5)
+  df_cols <- grep("^DF_|^Dilution_Factor$", names(df), value = TRUE)
+  for (col in df_cols) {
+    if (is.character(df[[col]])) {
+      df[[col]] <- as.numeric(gsub(",", ".", df[[col]]))
+    }
+  }
+
   df
 }
 
@@ -132,6 +140,12 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
     filter(PlateID == plate_id) %>%
     add_well_coords()
 
+  # Mapping file may only define one layout (all plates share the same wells).
+  # If no rows found for this plate, fall back to the full mapping.
+  if (nrow(plate_data) == 0) {
+    plate_data <- data %>% add_well_coords()
+  }
+
   if ("Content" %in% names(plate_data)) {
     plate_data <- plate_data %>% mutate(Well_Label = well_label(Content))
   } else {
@@ -149,6 +163,7 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
       na.value = NA_FILL,
       direction = 1
     ) +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(8, "cm"))) +
     scale_x_continuous(
       breaks = 1:12, limits = c(0.5, 12.5), expand = c(0, 0)
     ) +
@@ -170,10 +185,16 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
 # Build a 96-well plate heatmap for Within_Range (categorical fill).
 # Joins the full well list from the mapping file so standards/blanks are shown.
 make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
-  # All wells for this plate (from mapping)
+  # All wells for this plate (from mapping).
+  # If the mapping has no row for plate_id (single-layout file), use any plate's
+  # rows and re-label them so the join with output data works correctly.
+  mapping_plates <- unique(mapping_data$PlateID)
+  map_plate <- if (plate_id %in% mapping_plates) plate_id else mapping_plates[1]
+
   all_wells <- mapping_data %>%
-    filter(PlateID == plate_id) %>%
-    select(any_of(c("Well", "PlateID", "Content", "Sample_ID")))
+    filter(PlateID == map_plate) %>%
+    select(any_of(c("Well", "Content", "Sample_ID"))) %>%
+    mutate(PlateID = plate_id)
 
   # Sample results for this plate + cytokine
   results <- output_data %>%
@@ -202,6 +223,7 @@ make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
       na.value = NA_FILL,
       drop = FALSE
     ) +
+    guides(fill = guide_legend(nrow = 1, title.position = "top")) +
     scale_x_continuous(
       breaks = 1:12, limits = c(0.5, 12.5), expand = c(0, 0)
     ) +
