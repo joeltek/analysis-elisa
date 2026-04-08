@@ -393,38 +393,23 @@ server <- function(input, output, session) {
     })
   })
 
-  # Sidebar legends: dilution factor (discrete swatches) + Within_Range
+  # Sidebar legends: dilution factor colorbar + Within_Range swatches
   output$sidebar_legends <- renderUI({
     mapping <- mapping_data()
 
-    # ---- Dilution Factor discrete legend ----
+    # ---- Dilution Factor colorbar ----
     df_legend <- NULL
     if (!is.null(mapping) && !is.null(input$cytokine)) {
       df_col <- get_df_column(mapping, input$cytokine)
       if (!is.null(df_col) && df_col %in% names(mapping)) {
         vals <- sort(unique(as.numeric(mapping[[df_col]])), na.last = NA)
         if (length(vals) > 0) {
-          # Map each value to a plasma colour matching the continuous ggplot2 scale
-          rng  <- range(vals)
-          norm <- if (diff(rng) == 0) rep(0.5, length(vals))
-                  else (vals - rng[1]) / diff(rng)
-          pal    <- viridisLite::viridis(256, option = "plasma")
-          colors <- pal[pmax(1L, round(norm * 255) + 1L)]
-          # Use white text on dark swatches, black on bright yellow end
-          txt_colors <- ifelse(norm > 0.8, "black", "white")
-
-          swatches <- lapply(seq_along(vals), function(i) {
-            tags$li(tags$span(
-              style = paste0("background:", colors[i],
-                             "; color:", txt_colors[i],
-                             "; padding:1px 8px; border-radius:3px;",
-                             " font-family:monospace;"),
-              as.character(vals[i])
-            ))
-          })
+          bar_height <- max(120, length(vals) * 28)
           df_legend <- tagList(
             tags$p(tags$b("Dilution factor:")),
-            tags$ul(style = "padding-left:18px;", swatches)
+            plotOutput("df_legend_plot",
+                       height = paste0(bar_height, "px"),
+                       width  = "100%")
           )
         }
       }
@@ -456,6 +441,42 @@ server <- function(input, output, session) {
 
     tagList(hr(), df_legend, range_legend)
   })
+
+  # Dilution factor colorbar: a vertical plasma gradient with ticks at data values
+  output$df_legend_plot <- renderPlot({
+    mapping <- mapping_data()
+    req(mapping, input$cytokine)
+
+    df_col <- get_df_column(mapping, input$cytokine)
+    req(!is.null(df_col), df_col %in% names(mapping))
+
+    vals <- sort(unique(as.numeric(mapping[[df_col]])), na.last = NA)
+    req(length(vals) > 0)
+
+    rng     <- range(vals)
+    bar_df  <- data.frame(x = 1,
+                          y = seq(rng[1], rng[2], length.out = 500))
+
+    ggplot(bar_df, aes(x = x, y = y, fill = y)) +
+      geom_raster(interpolate = TRUE) +
+      scale_fill_viridis_c(option = "plasma", guide = "none") +
+      scale_y_continuous(
+        breaks = vals,
+        labels = vals,
+        expand = c(0, 0)
+      ) +
+      scale_x_continuous(expand = c(0, 0)) +
+      theme_minimal(base_size = 11) +
+      theme(
+        axis.title       = element_blank(),
+        axis.text.x      = element_blank(),
+        axis.ticks.x     = element_blank(),
+        axis.text.y      = element_text(size = 10),
+        axis.ticks.y     = element_line(colour = "grey40"),
+        panel.grid       = element_blank(),
+        plot.margin      = margin(4, 4, 4, 4)
+      )
+  }, bg = "transparent")
 
   # Main panel UI: single plate or all plates
   output$plates_ui <- renderUI({
