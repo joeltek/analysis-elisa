@@ -163,7 +163,6 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
       na.value = NA_FILL,
       direction = 1
     ) +
-    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(8, "cm"))) +
     scale_x_continuous(
       breaks = 1:12, limits = c(0.5, 12.5), expand = c(0, 0)
     ) +
@@ -175,10 +174,10 @@ make_dilution_heatmap <- function(data, plate_id, df_col) {
     ) +
     theme_minimal(base_size = 13) +
     theme(
-      panel.grid  = element_blank(),
-      plot.title  = element_text(face = "bold", hjust = 0.5),
-      axis.ticks  = element_blank(),
-      legend.position = "bottom"
+      panel.grid      = element_blank(),
+      plot.title      = element_text(face = "bold", hjust = 0.5),
+      axis.ticks      = element_blank(),
+      legend.position = "none"
     )
 }
 
@@ -223,7 +222,6 @@ make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
       na.value = NA_FILL,
       drop = FALSE
     ) +
-    guides(fill = guide_legend(nrow = 1, title.position = "top")) +
     scale_x_continuous(
       breaks = 1:12, limits = c(0.5, 12.5), expand = c(0, 0)
     ) +
@@ -235,10 +233,10 @@ make_range_heatmap <- function(mapping_data, output_data, plate_id, cytokine) {
     ) +
     theme_minimal(base_size = 13) +
     theme(
-      panel.grid  = element_blank(),
-      plot.title  = element_text(face = "bold", hjust = 0.5),
-      axis.ticks  = element_blank(),
-      legend.position = "bottom"
+      panel.grid      = element_blank(),
+      plot.title      = element_text(face = "bold", hjust = 0.5),
+      axis.ticks      = element_blank(),
+      legend.position = "none"
     )
 }
 
@@ -283,27 +281,7 @@ ui <- fluidPage(
              "– colour shows whether each sample measurement fell",
              "within the assay dynamic range."),
 
-      hr(),
-
-      tags$p(tags$b("Legend:")),
-      tags$ul(
-        tags$li(tags$span(
-          style = paste0("background:", WITHIN_RANGE_COLOURS["Within Range"],
-                         "; color:white; padding:1px 6px; border-radius:3px;"),
-          "Within Range")),
-        tags$li(tags$span(
-          style = paste0("background:", WITHIN_RANGE_COLOURS["Between LLOD and LLOQ"],
-                         "; padding:1px 6px; border-radius:3px;"),
-          "Between LLOD and LLOQ")),
-        tags$li(tags$span(
-          style = paste0("background:", WITHIN_RANGE_COLOURS["Below LLOD"],
-                         "; padding:1px 6px; border-radius:3px;"),
-          "Below LLOD")),
-        tags$li(tags$span(
-          style = paste0("background:", WITHIN_RANGE_COLOURS["Above ULOQ"],
-                         "; color:white; padding:1px 6px; border-radius:3px;"),
-          "Above ULOQ"))
-      )
+      uiOutput("sidebar_legends")
     ),
 
     mainPanel(
@@ -413,6 +391,70 @@ server <- function(input, output, session) {
         })
       })
     })
+  })
+
+  # Sidebar legends: dilution factor (discrete swatches) + Within_Range
+  output$sidebar_legends <- renderUI({
+    mapping <- mapping_data()
+
+    # ---- Dilution Factor discrete legend ----
+    df_legend <- NULL
+    if (!is.null(mapping) && !is.null(input$cytokine)) {
+      df_col <- get_df_column(mapping, input$cytokine)
+      if (!is.null(df_col) && df_col %in% names(mapping)) {
+        vals <- sort(unique(as.numeric(mapping[[df_col]])), na.last = NA)
+        if (length(vals) > 0) {
+          # Map each value to a plasma colour matching the continuous ggplot2 scale
+          rng  <- range(vals)
+          norm <- if (diff(rng) == 0) rep(0.5, length(vals))
+                  else (vals - rng[1]) / diff(rng)
+          pal    <- viridisLite::viridis(256, option = "plasma")
+          colors <- pal[pmax(1L, round(norm * 255) + 1L)]
+          # Use white text on dark swatches, black on bright yellow end
+          txt_colors <- ifelse(norm > 0.8, "black", "white")
+
+          swatches <- lapply(seq_along(vals), function(i) {
+            tags$li(tags$span(
+              style = paste0("background:", colors[i],
+                             "; color:", txt_colors[i],
+                             "; padding:1px 8px; border-radius:3px;",
+                             " font-family:monospace;"),
+              as.character(vals[i])
+            ))
+          })
+          df_legend <- tagList(
+            tags$p(tags$b("Dilution factor:")),
+            tags$ul(style = "padding-left:18px;", swatches)
+          )
+        }
+      }
+    }
+
+    # ---- Within_Range categorical legend ----
+    range_legend <- tagList(
+      tags$p(tags$b("Assay performance:")),
+      tags$ul(
+        style = "padding-left:18px;",
+        tags$li(tags$span(
+          style = paste0("background:", WITHIN_RANGE_COLOURS["Within Range"],
+                         "; color:white; padding:1px 8px; border-radius:3px;"),
+          "Within Range")),
+        tags$li(tags$span(
+          style = paste0("background:", WITHIN_RANGE_COLOURS["Between LLOD and LLOQ"],
+                         "; padding:1px 8px; border-radius:3px;"),
+          "Between LLOD and LLOQ")),
+        tags$li(tags$span(
+          style = paste0("background:", WITHIN_RANGE_COLOURS["Below LLOD"],
+                         "; padding:1px 8px; border-radius:3px;"),
+          "Below LLOD")),
+        tags$li(tags$span(
+          style = paste0("background:", WITHIN_RANGE_COLOURS["Above ULOQ"],
+                         "; color:white; padding:1px 8px; border-radius:3px;"),
+          "Above ULOQ"))
+      )
+    )
+
+    tagList(hr(), df_legend, range_legend)
   })
 
   # Main panel UI: single plate or all plates
